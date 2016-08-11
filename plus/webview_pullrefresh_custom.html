@@ -30,12 +30,15 @@ document.addEventListener("DOMContentLoaded",function(){
 function onRefresh(){
 	setTimeout(function(){
 		if(list){
-			
-			var xhr = new plus.net.XMLHttpRequest();
-			xhr.onreadystatechange = function(){
-				if(xhr.readyState == 4){
-					if(xhr.status == 200){
-						var jsondata =  JSON.parse(xhr.responseText);//eval('(' + xhr.responseText + ')');
+			mui.ajax('http://192.168.4.246:8080/dmp-crawler-web/newslist.jhtml',{
+				//data:loginInfo,
+				dataType:'text/html',//服务器返回json格式数据
+				type:'get',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒；
+				//headers:{'Content-Type':'application/json'},	              
+				success:function(responseText){
+					
+					var jsondata =  JSON.parse(responseText);//eval('(' + xhr.responseText + ')');
 						for(var idx in jsondata){
 							var item=document.createElement("li");
 							//item.innerHTML = "<a href='#' onclick='plus.runtime.openURL(\"" + jsondata[idx].url + "\")'>test</a>";
@@ -44,17 +47,13 @@ function onRefresh(){
 							//item.innerHTML +="</a>";
 							list.insertBefore(item,list.firstChild);
 						}
-						
-					}
-					else{
-						//return callback("登录请求失败：" + xhr.status);
-					}
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					console.log(type);
+					//return callback("登录请求失败：" + xhr.status);
 				}
-			}
-			xhr.open("get","http://192.168.4.246:8080/dmp-crawler-web/newslist.jhtml");
-			xhr.send();
-			
-			
+			});
 			
 			//var item=document.createElement("li");
 			//item.innerHTML="<span>New Item "+(new Date())+"</span>";

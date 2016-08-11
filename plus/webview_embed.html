@@ -8,13 +8,14 @@
 		<title>Hello H5+</title>
 		<script type="text/javascript" src="../js/common.js"></script>
 		<script type="text/javascript" charset="utf-8">
-var ws=null,embed=null,srcUrl=null;
+var ws=null,embed=null;
+var t_url=null;
 // 扩展API加载完毕，现在可以正常调用扩展API 
 function plusReady(){
 	ws=plus.webview.currentWebview();
-	srcUrl = ws.source;
-	document.getElementById("url").value=srcUrl;
-	ws.addEventListener('show',createEmbed,false);
+	t_url= ws.source;
+	//ws.addEventListener('show',createEmbed,false);
+	createEmbed();
 }
 // 判断扩展API是否准备，否则监听"plusready"事件
 if(window.plus){
@@ -29,7 +30,7 @@ function createEmbed(){
 		topoffset=(Math.round(plus.navigator.getStatusbarHeight())+45)+'px';
 	}
 	plus.nativeUI.showWaiting('',{style:'black',modal:false,background:'rgba(0,0,0,0)'});
-	embed=plus.webview.create(srcUrl,'embed',{top:topoffset,bottom:'0px',position:'dock',dock:'bottom',bounce:'vertical'});
+	embed=plus.webview.create(t_url,'embed',{top:topoffset,bottom:'0px',position:'dock',dock:'bottom',bounce:'vertical'});
 	ws.append(embed);
 	embed.addEventListener('loaded',function(){
 		plus.nativeUI.closeWaiting();
@@ -75,12 +76,8 @@ function onBrowserLoading(){
 	<body>
 		<header id="header">
 			<div class="nvbt iback" onclick="back(),plus.nativeUI.closeWaiting();"></div>
-			<div class="nvtt">
-				<form action="?" method="get" onsubmit="openUrl();return false;">
-				<input id="url" type="url" value=""/>
-				</form>
-			</div>
-			<div class="nvbt" onclick="openUrl();">Go</div>
+			<div class="nvtt">大强新闻</div>
+			<div style="visibility:hidden" class="nvbt irefresh" onclick="refresh()"></div>
 		</header>
 	</body>
 	<script type="text/javascript" src="../js/immersed.js" ></script>
