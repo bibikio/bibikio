@@ -26,14 +26,17 @@
 			return false;
 			//return loginInfo.account == user.account && loginInfo.password == user.password;
 		});
-		
+		/*
 		var xhr = new plus.net.XMLHttpRequest();
 		xhr.onreadystatechange = function(){
 			if(xhr.readyState == 4){
 				if(xhr.status == 200){
+					var cookie = xhr.getResponseHeader("Set-Cookie");
+					alert(cookie);
 					var data =  JSON.parse(xhr.responseText);//eval('(' + xhr.responseText + ')');
 					if(data.flag ==0){
-						localStorage.setItem("sid",data.sid);
+						//localStorage.setItem("sid",data.sid);
+						sessionStorage.setItem("Cookie","");
 						alert(data.sid);
 						return owner.createState(loginInfo.account, callback);
 					}
@@ -46,15 +49,38 @@
 				}
 			}
 		}
+		
 		xhr.open("get","http://192.168.4.246:8080/dmp-crawler-web/login2.jhtml?account=" + loginInfo.account + "&password=" + loginInfo.password + "&authcode=" + loginInfo.authcode);
 		xhr.send();
-		/*	
+		//	
 		if (authed) {
 			return owner.createState(loginInfo.account, callback);
 		} else {
 			return callback('用户名或密码错误');
 		}
 		*/
+		
+		mui.ajax('http://192.168.4.246:8080/dmp-crawler-web/login2.jhtml',{
+			data:loginInfo,
+			dataType:'text/html',//服务器返回json格式数据
+			type:'get',//HTTP请求类型
+			timeout:10000,//超时时间设置为10秒；
+			headers:{'Content-Type':'application/json'},	              
+			success:function(responseText){
+				var data =  JSON.parse(responseText);
+				if(data.flag ==0){
+						return owner.createState(loginInfo.account, callback);
+					}
+					else{
+						return callback('用户名或密码错误');
+					}
+			},
+			error:function(xhr,type,errorThrown){
+				//异常处理；
+				//console.log(type);
+				return callback("登录请求失败：" + xhr.status);
+			}
+		});
 	};
 
 	owner.createState = function(name, callback) {
