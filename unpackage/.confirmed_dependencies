@@ -1,0 +1,91 @@
+{
+	"main.html": {
+		"refer": [
+			"setting.html",
+			"plus/webview_pullhead_custom.html"
+		],
+		"resources": [
+			"js/app.js",
+			"js/mui.min.js",
+			"css/mui.min.css"
+		]
+	},
+	"login.html": {
+		"resources": [
+			"js/app.js",
+			"js/mui.min.js",
+			"images/sinaweibo.png",
+			"css/mui.min.css",
+			"css/style.css",
+			"images/weixin.png",
+			"images/qq.png",
+			"js/mui.enterfocus.js",
+			"fonts/mui.ttf"
+		],
+		"refer": [
+			"main.html",
+			"reg.html",
+			"forget_password.html"
+		]
+	},
+	"setting.html": {
+		"resources": [
+			"libs/easymob-webim-sdk/easemob.im-1.0.5.js",
+			"fonts/mui.ttf",
+			"libs/easymob-webim-sdk/json2.js",
+			"libs/easymob-webim-sdk/jquery-1.11.1.js",
+			"js/mui.locker.js",
+			"js/feedback.js",
+			"css/feedback-page.css",
+			"js/feedback-page.js",
+			"libs/easymob-webim-sdk/strophe-custom-2.0.0.js",
+			"js/mui.view.js",
+			"js/app.js",
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"images/iconfont-tianjia.png"
+		],
+		"refer": [
+			"login.html"
+		]
+	},
+	"plus/webview_pullhead_custom.html": {
+		"resources": [
+			"js/common.js",
+			"css/common.css",
+			"plus/webview_pullrefresh_custom.html",
+			"js/immersed.js",
+			"images/pull_arrow.png",
+			"images/pull_fresh.png",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"plus/webview_pullrefresh_custom.html"
+		]
+	},
+	"plus/webview_pullrefresh_custom.html": {
+		"resources": [
+			"css/common.css",
+			"js/mui.min.js"
+		],
+		"refer": [
+			"plus/webview_viewdetail.html",
+			"plus/webview_embed.html"
+		]
+	},
+	"plus/webview_viewdetail.html": {
+		"resources": [
+			"js/common.js",
+			"css/common.css",
+			"css/mui.min.css",
+			"js/immersed.js"
+		]
+	},
+	"plus/webview_embed.html": {
+		"resources": [
+			"js/common.js",
+			"css/common.css",
+			"js/immersed.js"
+		]
+	}
+}

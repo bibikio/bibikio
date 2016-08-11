@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<meta name="HandheldFriendly" content="true"/>
+		<meta name="MobileOptimized" content="320"/>
+		<title>Hello H5+</title>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+var ws=null,wo=null;
+// 扩展API加载完毕，现在可以正常调用扩展API 
+function plusReady(){
+	// 获取自身窗口
+	ws=plus.webview.currentWebview();
+	wo=ws.opener();
+}
+// 判断扩展API是否准备，否则监听"plusready"事件
+if(window.plus){
+	plusReady();
+}else{
+	document.addEventListener("plusready",plusReady,false);
+}
+// DOM构建完成获取列表元素
+var list=null;
+document.addEventListener("DOMContentLoaded",function(){
+	list=document.getElementById("list");
+});
+// 刷新页面
+function onRefresh(){
+	setTimeout(function(){
+		if(list){
+			
+			var xhr = new plus.net.XMLHttpRequest();
+			xhr.onreadystatechange = function(){
+				if(xhr.readyState == 4){
+					if(xhr.status == 200){
+						var jsondata =  JSON.parse(xhr.responseText);//eval('(' + xhr.responseText + ')');
+						for(var idx in jsondata){
+							var item=document.createElement("li");
+							//item.innerHTML = "<a href='#' onclick='plus.runtime.openURL(\"" + jsondata[idx].url + "\")'>test</a>";
+							item.innerHTML +="<div onclick='openNew(\"" + jsondata[idx].url + "\")'>" + jsondata[idx].summary + "</div>";
+							item.innerHTML +="<div>" + jsondata[idx].datetime + " 评论：" + jsondata[idx].remarkNum + " " +"</div>";
+							//item.innerHTML +="</a>";
+							list.insertBefore(item,list.firstChild);
+						}
+						
+					}
+					else{
+						//return callback("登录请求失败：" + xhr.status);
+					}
+				}
+			}
+			xhr.open("get","http://192.168.4.246:8080/dmp-crawler-web/newslist.jhtml");
+			xhr.send();
+			
+			
+			
+			//var item=document.createElement("li");
+			//item.innerHTML="<span>New Item "+(new Date())+"</span>";
+			//list.insertBefore(item,list.firstChild);
+		}
+		ws.resetBounce();
+		setTimeout(function(){
+			wo.evalJS("pullReset()");
+		},200);
+	},1000);
+}
+
+function openNew(targetUrl) {
+	mui.openWindow({
+			url: 'webview_embed.html',
+			show: {
+				aniShow: 'pop-in'
+			},
+			styles: {
+				popGesture: 'hide'
+			},
+			waiting: {
+				autoShow: false
+			},
+			extras:{
+				source : targetUrl
+			}
+	});
+}
+		</script>
+		<link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8"/>
+		<style type="text/css">
+li {
+	padding: 1em;
+	border-bottom: 1px solid #eaeaea;
+}
+li:active {
+	background: #f4f4f4;
+}
+		</style>
+	</head>
+	<body>
+		<ul id="list" style="list-style:none;margin:0;padding:0;">
+		</ul>
+	</body>
+</html>
